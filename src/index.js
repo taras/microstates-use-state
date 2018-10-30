@@ -1,15 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { useState } from "./future-react";
-import { create } from "./future-microstates";
+import useType from './use-type';
 
 import "./styles.css";
 
-let initial = create(Number, 42);
-
 function App() {
-  let counter = useState(initial);
-  return <button onClick={() => counter.increment() }>Increment ({counter.state})</button>;
+  let c1 = useType(Number, 42);
+  let c2 = useType(Number, 20);
+
+  return <div>
+    <button onClick={() => c1.increment() }>Increment ({c1.state})</button>
+    <button onClick={() => c2.increment() }>Increment ({c2.state})</button>
+  </div>;
 }
 
 const rootElement = document.getElementById("root");
