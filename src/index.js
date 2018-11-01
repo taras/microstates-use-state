@@ -1,9 +1,22 @@
-import React from "react";
 import ReactDOM from "react-dom";
-import useType from "./use-type";
-import { valueOf } from "microstates";
+import React, { useMemo, useState, useEffect } from "react";
+import { create, Store, valueOf } from "microstates";
 
 import "./styles.css";
+
+let initial = JSON.parse(localStorage.getItem("family-tree") || "{}");
+
+function useType(Type, value) {
+  let state;
+
+  let reference = useMemo(() => Store(create(Type, value), next => state[1](next)),
+    [Type, value]
+  );
+
+  state = useState(reference);
+
+  return state[0];
+}
 
 class Person {
   initialize() {
@@ -19,31 +32,44 @@ class Person {
 }
 
 function FamilyTree({ person }) {
-  return (
-    <ul>
-      <li>
+  return useMemo(
+    () => (
+      <>
         <input
           value={person.name.state}
-          onChange={e => {
-            person.name.set(e.target.value);
-          }}
+          onChange={e => person.name.set(e.target.value)}
         />
         {person.name.state !== "" && (
-          <div>
-            <strong>Father</strong>
-            <FamilyTree person={person.father} />
-            <strong>Mother</strong>
-            <FamilyTree person={person.mother} />
-          </div>
+          <ul>
+            <li>
+              Father <FamilyTree person={person.father} />
+            </li>
+            <li>
+              Mother <FamilyTree person={person.mother} />
+            </li>
+          </ul>
         )}
-      </li>
-    </ul>
+      </>
+    ),
+    [person]
   );
 }
 
-function App() {
-  let person = useType(Person);
-  return <FamilyTree person={person} />;
+function App({ initial }) {
+  let person = useType(Person, initial);
+
+  useEffect(() => {
+    let value = valueOf(person);
+    localStorage.setItem("family-tree", JSON.stringify(value));
+  });
+
+  return (
+    <>
+      <h2>Family Tree</h2>
+      <label>Name </label>
+      <FamilyTree person={person} />
+    </>
+  );
 }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<App initial={initial} />, document.getElementById("root"));

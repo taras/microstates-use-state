@@ -5,11 +5,7 @@ export default function useType(Type, value) {
   let state;
 
   let reference = useMemo(
-    () => {
-      let s = create(Type, value);
-      let i = Store(s, next => state[1](next))
-      return i;
-    },
+    () => Store(create(Type, value), next => state[1](next)),
     [Type, value]
   );
 
