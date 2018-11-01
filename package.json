@@ -8,7 +8,7 @@
     "react": "next",
     "react-dom": "next",
     "react-scripts": "2.0.3",
-    "microstates": "0.11.0"
+    "microstates": "https://github.com/microstates/microstates.js#master"
   },
   "devDependencies": {},
   "scripts": {

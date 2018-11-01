@@ -1,18 +1,49 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import useType from './use-type';
+import useType from "./use-type";
+import { valueOf } from "microstates";
 
 import "./styles.css";
 
-function App() {
-  let c1 = useType(Number, 42);
-  let c2 = useType(Number, 20);
-
-  return <div>
-    <button onClick={() => c1.increment() }>Increment ({c1.state})</button>
-    <button onClick={() => c2.increment() }>Increment ({c2.state})</button>
-  </div>;
+class Person {
+  initialize() {
+    if (valueOf(this) === undefined) {
+      return this.set({});
+    } else {
+      return this;
+    }
+  }
+  name = String;
+  father = Person;
+  mother = Person;
 }
 
-const rootElement = document.getElementById("root");
-ReactDOM.render(<App />, rootElement);
+function FamilyTree({ person }) {
+  return (
+    <ul>
+      <li>
+        <input
+          value={person.name.state}
+          onChange={e => {
+            person.name.set(e.target.value);
+          }}
+        />
+        {person.name.state !== "" && (
+          <div>
+            <strong>Father</strong>
+            <FamilyTree person={person.father} />
+            <strong>Mother</strong>
+            <FamilyTree person={person.mother} />
+          </div>
+        )}
+      </li>
+    </ul>
+  );
+}
+
+function App() {
+  let person = useType(Person);
+  return <FamilyTree person={person} />;
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));
