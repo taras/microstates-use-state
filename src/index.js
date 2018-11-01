@@ -42,10 +42,10 @@ function FamilyTree({ person }) {
         {person.name.state !== "" && (
           <ul>
             <li>
-              Father <FamilyTree person={person.father} />
+              Father: <FamilyTree person={person.father} />
             </li>
             <li>
-              Mother <FamilyTree person={person.mother} />
+              Mother: <FamilyTree person={person.mother} />
             </li>
           </ul>
         )}
