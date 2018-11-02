@@ -9,7 +9,8 @@ let initial = JSON.parse(localStorage.getItem("family-tree") || "{}");
 function useType(Type, value) {
   let state;
 
-  let reference = useMemo(() => Store(create(Type, value), next => state[1](next)),
+  let reference = useMemo(
+    () => Store(create(Type, value), next => state[1](next)),
     [Type, value]
   );
 
@@ -19,39 +20,42 @@ function useType(Type, value) {
 }
 
 class Person {
-  initialize() {
-    if (valueOf(this) === undefined) {
-      return this.set({});
-    } else {
-      return this;
-    }
-  }
   name = String;
   father = Person;
   mother = Person;
 }
 
 function FamilyTree({ person }) {
-  return useMemo(
-    () => (
-      <>
+  let name = useMemo(
+    () => {
+      return (
         <input
           value={person.name.state}
           onChange={e => person.name.set(e.target.value)}
         />
-        {person.name.state !== "" && (
-          <ul>
-            <li>
-              Father: <FamilyTree person={person.father} />
-            </li>
-            <li>
-              Mother: <FamilyTree person={person.mother} />
-            </li>
-          </ul>
-        )}
-      </>
-    ),
-    [person]
+      );
+    },
+    [person.name]
+  );
+
+  let father = useMemo(() => <FamilyTree person={person.father} />, [
+    person.father
+  ]);
+
+  let mother = useMemo(() => <FamilyTree person={person.mother} />, [
+    person.mother
+  ]);
+
+  return (
+    <>
+      {name}
+      {person.name.state && (
+        <ul>
+          <li>Father: {father}</li>
+          <li>Mother: {mother}</li>
+        </ul>
+      )}
+    </>
   );
 }
 

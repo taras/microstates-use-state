@@ -5183,9 +5183,9 @@ micromatch@^3.1.10, micromatch@^3.1.4, micromatch@^3.1.8, micromatch@^3.1.9:
     snapdragon "^0.8.1"
     to-regex "^3.0.2"
 
-"microstates@https://github.com/microstates/microstates.js#master":
+"microstates@https://github.com/microstates/microstates.js#0d8c98266f218ac5a9876c0e0ef9b360af565621":
   version "0.11.0"
-  resolved "https://github.com/microstates/microstates.js#36ec54b6856ad5cbb8c842704a7431c22693851b"
+  resolved "https://github.com/microstates/microstates.js#0d8c98266f218ac5a9876c0e0ef9b360af565621"
   dependencies:
     coveralls "3.0.2"
     funcadelic "^0.5.0"
