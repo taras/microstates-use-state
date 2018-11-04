@@ -9,12 +9,12 @@ let initial = JSON.parse(localStorage.getItem("family-tree") || "{}");
 function useType(Type, value) {
   let state;
 
-  let reference = useMemo(
+  let initialState = useMemo(
     () => Store(create(Type, value), next => state[1](next)),
     [Type, value]
   );
 
-  state = useState(reference);
+  state = useState(initialState);
 
   return state[0];
 }
@@ -28,6 +28,7 @@ class Person {
 function FamilyTree({ person }) {
   let name = useMemo(
     () => {
+      console.log('Updating name to', person.name.state);
       return (
         <input
           value={person.name.state}
