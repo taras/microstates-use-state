@@ -1,10 +1,11 @@
 import ReactDOM from "react-dom";
 import React, { useMemo, useState, useEffect } from "react";
 import { create, Store, valueOf } from "microstates";
+import { englishFamily } from './fixtures';
 
 import "./styles.css";
 
-let initial = JSON.parse(localStorage.getItem("family-tree") || "{}");
+let initial = JSON.parse(localStorage.getItem("family-tree") || englishFamily);
 
 function useType(Type, value) {
   let state;
